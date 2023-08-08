@@ -61,7 +61,7 @@
 		}
 		else
 		{
-			$sql = mysqli_query($db,"select * from employee where RoleId !='1' LIMIT $RecordeLimit");
+			$sql = mysqli_query($db,"select * from employee  LIMIT $RecordeLimit");
 		}
 
 		for($i=0;$i<$number_of_row;$i++)

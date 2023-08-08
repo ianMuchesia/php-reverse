@@ -37,8 +37,8 @@
 			}
 		}else
 		{
-			mysqli_query($db,"insert into state values(null,'$country','$state')");
-			echo "<script>window.location='../state.php';</script>";
+			mysqli_query($db,"insert into counties values(null,'$country','$state')");
+			echo "<script>window.location='../counties.php';</script>";
 		}
 		
 	}

@@ -13,7 +13,7 @@ $gendern = mysqli_query($db, "select * from gender  ORDER BY Name");
 $rolen = mysqli_query($db, "select * from role  ORDER BY Name");
 $statusn = mysqli_query($db, "select * from status  ORDER BY Name");
 $maritaln = mysqli_query($db, "select * from maritalstatus  ORDER BY Name");
-$positionn = mysqli_query($db, "select * from position  ORDER BY Name");
+$owners = mysqli_query($db, "select * from owners  ORDER BY Name");
 $vehicle = mysqli_query($db, "select * from vehicletype  ORDER BY vehicletype_name");
 $county = mysqli_query($db, "select * from counties  ORDER BY Name");
 $area = mysqli_query($db, "select * from areas  ORDER BY Name");
@@ -229,7 +229,7 @@ if (isset($_GET['msg'])) {
             </span>
             <select name="position" title="Position" class="form-control" style="text-transform: capitalize;" required="">
               <option value="">-- Select Owner --</option>
-              <?php while ($rw = mysqli_fetch_assoc($positionn)) { ?>
+              <?php while ($rw = mysqli_fetch_assoc($owners)) { ?>
                 <option value="<?php echo $rw["PositinId"]; ?>" <?php if (isset($editemp["PositionId"]) && $editemp["PositionId"] == $rw["PositinId"]) {
                                                                   echo "selected";
                                                                 } ?>><?php echo $rw["Name"]; ?></option>
@@ -537,16 +537,57 @@ if (isset($_GET['msg'])) {
     const xhr = new XMLHttpRequest();
     const name = document.querySelector('#countryid').value
 
-    
+
 
     if (!name) {
       return
     }
 
     xhr.open('GET', 'controller/process.php?countryid=' + name, true);
-    console.log(name)
+
     xhr.onload = function() {
-      console.log(this.responseText)
+      if (this.status === 200) {
+
+        const response = JSON.parse(this.responseText)
+
+
+        output = response.map(item => (
+          `<option value="${item['StateId']}">${item["Name"]}</option>`
+        )).join("")
+        document.querySelector('#stateid').innerHTML = `
+      <option value="">--Select County--</option>
+      ` + output
+      }
+    }
+    xhr.send()
+  })
+
+  document.querySelector('#stateid').addEventListener('change', () => {
+    const xhr = new XMLHttpRequest();
+    const name = document.querySelector('#stateid').value
+
+
+
+    if (!name) {
+      return
+    }
+
+    xhr.open('GET', 'controller/process.php?countyid=' + name, true);
+
+    xhr.onload = function() {
+      if (this.status === 200) {
+
+
+        const response = JSON.parse(this.responseText)
+
+
+        output = response.map(item => (
+          `<option value="${item['CityId']}">${item["Name"]}</option>`
+        )).join("")
+        document.querySelector('#cityid').innerHTML = `
+      <option value="">--Select Area--</option>
+      ` + output
+      }
     }
     xhr.send()
   })
