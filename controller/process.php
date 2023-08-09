@@ -34,6 +34,23 @@ if(isset($_GET['countyid'])){
 }
 
 
+if(isset($_GET['ownerId'])){
+
+
+    $ownerId = $_GET['ownerId'];
+  
+    $query = "SELECT * FROM owners WHERE ownerId = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('i', $ownerId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    
+    echo json_encode($row);
+}
+
+
+
 
 
 ?>

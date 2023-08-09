@@ -124,7 +124,7 @@ if (isset($_GET['msg'])) {
         <div class="clearfix"> </div>
       </div>
       <div class="vali-form-group">
-        <div class="col-md-4 control-label">
+        <!-- <div class="col-md-4 control-label">
           <label class="control-label">Birth Date*</label>
           <div class="input-group">
             <span class="input-group-addon">
@@ -132,7 +132,7 @@ if (isset($_GET['msg'])) {
             </span>
             <input type="text" id="Birthdate" title="Birth Date" name="bdate" placeholder="Birth Date" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" value="<?php echo (isset($editemp["Birthdate"])) ? $editemp["Birthdate"] : ""; ?>" class="form-control" required="">
           </div>
-        </div>
+        </div> -->
 
         <div class="col-md-4 control-label">
           <label class="control-label">Marital*</label>
@@ -165,7 +165,7 @@ if (isset($_GET['msg'])) {
       <div class="clearfix"></div>
 
       <div class="vali-form-group">
-        <div class="col-md-4 control-label">
+        <!-- <div class="col-md-4 control-label">
           <label class="control-label">Next of Kin*</label>
           <div class="input-group">
             <span class="input-group-addon">
@@ -173,7 +173,7 @@ if (isset($_GET['msg'])) {
             </span>
             <input type="text" name="next_of_kin" title="Next of Kin" value="<?php echo (isset($editemp["next_of_kin"])) ? $editemp["next_of_kin"] : ""; ?>" class="form-control" placeholder="Next of Kin" required="">
           </div>
-        </div>
+        </div> -->
 
         <div class="col-md-8 control-label">
           <label class="control-label">Address*</label>
@@ -227,10 +227,10 @@ if (isset($_GET['msg'])) {
             <span class="input-group-addon">
               <i class="fa fa-language" aria-hidden="true"></i>
             </span>
-            <select name="position" title="Position" class="form-control" style="text-transform: capitalize;" required="">
+            <select name="owner" title="Owner" class="form-control" style="text-transform: capitalize;" required="" id="owner">
               <option value="">-- Select Owner --</option>
               <?php while ($rw = mysqli_fetch_assoc($owners)) { ?>
-                <option value="<?php echo $rw["PositinId"]; ?>" <?php if (isset($editemp["PositionId"]) && $editemp["PositionId"] == $rw["PositinId"]) {
+                <option value="<?php echo $rw["ownerId"]; ?>" <?php if (isset($editemp["ownerId"]) && $editemp["ownerId"] == $rw["ownerId"]) {
                                                                   echo "selected";
                                                                 } ?>><?php echo $rw["Name"]; ?></option>
               <?php } ?>
@@ -246,7 +246,8 @@ if (isset($_GET['msg'])) {
             <span class="input-group-addon">
               <i class="fa fa-mobile" aria-hidden="true"></i>
             </span>
-            <input type="text" name="shortcode" title="Shortcode" value="<?php echo (isset($editemp["shortcd"])) ? $editemp["shortcd"] : ""; ?>" class="form-control" placeholder="Shortcode" required="">
+            <input type="text" name="shortcode" id="shortcode"
+            title="Shortcode" value="<?php echo (isset($editemp["shortcd"])) ? $editemp["shortcd"] : ""; ?>" class="form-control" placeholder="Shortcode" required="">
           </div>
         </div>
 
@@ -376,7 +377,7 @@ if (isset($_GET['msg'])) {
           </div>
         </div>
 
-        <div class="col-md-3 control-label">
+        <!-- <div class="col-md-3 control-label">
           <label class="control-label">Leave Date</label>
           <div class="input-group">
             <span class="input-group-addon">
@@ -384,35 +385,10 @@ if (isset($_GET['msg'])) {
             </span>
             <input type="text" id="LeaveDate" title="Leave Date" name="leavedate" placeholder="Leave Date" value="<?php echo (isset($editemp["LeaveDate"])) ? $editemp["LeaveDate"] : ""; ?>" class="form-control" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
           </div>
-        </div>
+        </div> -->
 
-        <div class="col-md-3 control-label">
-          <label class="control-label">Status</label>
-          <div class="input-group">
-            <span class="input-group-addon">
-              <i class="fa fa-map-marker" aria-hidden="true"></i>
-            </span>
-            <select name="status" title="Status" required="" style="text-transform: capitalize;">
-              <option value="">-- Select Status --</option>
-              <?php while ($rw = mysqli_fetch_assoc($statusn)) { ?>
-                <option value="<?php echo $rw["StatusId"]; ?>" <?php if (isset($editemp["StatusId"]) && $editemp["StatusId"] == $rw["StatusId"]) {
-                                                                  echo "Selected";
-                                                                } ?>> <?php echo $rw["Name"]; ?> </option>
-              <?php } ?>
-            </select>
-          </div>
-        </div>
+    
 
-
-        <div class="col-md-3 control-label">
-          <label class="control-label">Email*</label>
-          <div class="input-group">
-            <span class="input-group-addon">
-              <i class="fa fa-envelope" aria-hidden="true"></i>
-            </span>
-            <input type="email" name="email" title="Email" value="<?php echo (isset($editemp["Email"])) ? $editemp["Email"] : ""; ?>" class="form-control" placeholder="Email Address" required="">
-          </div>
-        </div>
 
         <div class="col-md-3 control-label">
           <label class="control-label">Password*</label>
@@ -533,6 +509,8 @@ if (isset($_GET['msg'])) {
   });
 </script>
 <script>
+
+  //counties based on country
   document.querySelector('#countryid').addEventListener('change', () => {
     const xhr = new XMLHttpRequest();
     const name = document.querySelector('#countryid').value
@@ -562,6 +540,7 @@ if (isset($_GET['msg'])) {
     xhr.send()
   })
 
+  //area based on counties selected
   document.querySelector('#stateid').addEventListener('change', () => {
     const xhr = new XMLHttpRequest();
     const name = document.querySelector('#stateid').value
@@ -590,6 +569,45 @@ if (isset($_GET['msg'])) {
       }
     }
     xhr.send()
+  })
+
+  //generate random numbers
+  function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+  document.querySelector("#owner").addEventListener('change', ()=>{
+
+    const xhr = new XMLHttpRequest()
+    const owner = document.querySelector("#owner").value
+    if(!owner)return;
+
+
+    xhr.open('GET', 'controller/process.php?ownerId=' + owner, true);
+    xhr.onload = function() {
+      if (this.status === 200) {
+
+       
+
+        const response = JSON.parse(this.responseText)
+
+        
+
+        document.querySelector('#shortcode').value = response.Name.slice(0,2) + getRandomNumber(0,9999);
+
+
+
+       
+    }
+  }
+    xhr.send()
+   
+
+
+
+
+
+  
   })
 </script>
 <?php include('footer.php'); ?>

@@ -24,12 +24,12 @@
 		
 		$city=$data['city'];
 		$joindate=$data['joindate'];
-		$leavedate=$data['leavedate'];
+		
 		$status=$data['status'];
-	
+	$shortcode = $data['shortcode'];
 		$password=$data['password'];
 		$marital=$data['marital'];
-		$position=$data['position'];
+		$owner=$data['owner'];
 		$imagefilename = $data['imagefilename'];
 		$ImageComplete=false;
 		$vehicleType = $data['vehicle'];
@@ -91,7 +91,7 @@
 			date_default_timezone_set("Asia/Kolkata");
 			$datetime = date("Y-m-d h:i:s");
 
-			print_r([$city, $address1, $address2 , $bdate, $datetime, $fname, $lname, $mname]);
+			print_r([$empid, $fname, $mname, $lname, $gender , $address1, $address2, $city, $mnumber, $email, $password, $owner,$vehicleType, $marital, $shortcode]);
 			if($editid==0)
 			{
 				if(!empty($_FILES['pfimg']['name']))
@@ -103,7 +103,18 @@
 				{
 					$name = $_POST["imagefilename"];
 				}
-				mysqli_query($db,"insert into employee values(null,'$empid','$fname','$mname','$lname','$bdate','$gender','$address1','$address2','$city','$mnumber','$email','$password','$marital','$position','$datetime',null,null,'$joindate','$leavedate',null,null,'$status','$name', '$vehicleType')");
+				mysqli_query($db,"insert into employee values(null,'$empid','$fname','$mname','$lname','$gender','$address1','$address2','$city','$mnumber','$email','$password','$owner','$datetime',null,null,'$joindate',null,null,'$name', '$vehicleType', '$marital',null)");
+
+				$autoInc_id = mysqli_insert_id($db);
+
+				if($autoInc_id){
+					$shortcodeVal = $shortcode . $autoInc_id;
+				
+				}
+				print_r($shortcodeVal);
+
+				mysqli_query($db,"update employee set 
+				shortcode='$shortcodeVal' where EmpId='$autoInc_id' ");
 
 				header("location:../detailview.php?id=Successfull... ");exit;
 			}
