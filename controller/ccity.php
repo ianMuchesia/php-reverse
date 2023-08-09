@@ -11,16 +11,16 @@
 		$state = $_POST['state'];
 		$city = $_POST['city'];
 		if(is_numeric($cityid) && $cityid > 0){
-			$sql = mysqli_query($db,"select * from city where CityId='$cityid'");
+			$sql = mysqli_query($db,"select * from areas where CityId='$cityid'");
 			if(mysqli_num_rows($sql))
 			{
-				mysqli_query($db,"update city set StateId='$state',Name='$city' where CityId='$cityid'");
-				echo "<script>window.location='../city.php';</script>";
+				mysqli_query($db,"update areas set StateId='$state',Name='$city' where CityId='$cityid'");
+				echo "<script>window.location='../area.php';</script>";
 			}
 		}else
 		{
-			mysqli_query($db,"insert into city values(null,'$state','$city')");
-			echo "<script>window.location='../city.php';</script>";
+			mysqli_query($db,"insert into areas values(null,'$state','$city')");
+			echo "<script>window.location='../area.php';</script>";
 		}
 	}
 	else if(isset($_POST['addstates']))
@@ -29,16 +29,16 @@
 		$country = $_POST['country'];
 		$state = $_POST['state'];
 		if(is_numeric($stateid) && $stateid > 0){
-			$sql = mysqli_query($db,"select * from state where StateId='$stateid'");
+			$sql = mysqli_query($db,"select * from counties where StateId='$stateid'");
 			if(mysqli_num_rows($sql))
 			{
-				mysqli_query($db,"update state set CountryId='$country',Name='$state' where StateId='$stateid'");
-				echo "<script>window.location='../state.php';</script>";
+				mysqli_query($db,"update counties set CountryId='$country',Name='$state' where StateId='$stateid'");
+				echo "<script>window.location='../county.php';</script>";
 			}
 		}else
 		{
 			mysqli_query($db,"insert into counties values(null,'$country','$state')");
-			echo "<script>window.location='../counties.php';</script>";
+			echo "<script>window.location='../county.php';</script>";
 		}
 		
 	}
@@ -81,15 +81,15 @@
 	{
 		$delet = $_GET['statedelete'];
 
-		mysqli_query($db,"delete from state where StateId='$delet'");
-		echo "<script>window.location='../state.php';</script>";
+		mysqli_query($db,"delete from counties where StateId='$delet'");
+		echo "<script>window.location='../county.php';</script>";
 	}
 	else if(isset($_GET['citydelete']))
 	{
 		$delet = $_GET['citydelete'];
 
-		mysqli_query($db,"delete from city where CityId='$delet'");
-		echo "<script>window.location='../city.php';</script>";
+		mysqli_query($db,"delete from areas where CityId='$delet'");
+		echo "<script>window.location='../area.php';</script>";
 	}
 	else if(isset($_GET['countrydelete']))
 	{

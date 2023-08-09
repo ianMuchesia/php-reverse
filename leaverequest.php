@@ -68,9 +68,9 @@
       $typename = mysqli_fetch_assoc($typeid);
       ?>
     <div class="row" style="margin-right: 0; margin-top: 10px; margin-left: 0;">
-      <div class="col-md-1"><?php $i=$i; echo $i; $i++;?></div>
-      <div class="col-md-2"><?php echo (isset($namem))?$namem:"";?></div>
-      <div class="col-md-1" style="text-align: center;"><?php echo (isset($row['EmpId']))?$row['EmpId']:"";?></div>
+      <div class="col-md-1"> <h2>Lets go</h2>  </div>
+      <div class="col-md-2"><p>Msodoki</p></div>
+      <div class="col-md-1" style="text-align: center;"><p>Msodoki</p></div>
       <div class="col-md-2"><?php echo ucfirst((isset($typename['Type_of_Name']))?$typename['Type_of_Name']:"");?></div>
       <div class="col-md-1" ><?php echo ucfirst((isset($row['Reason']))?$row['Reason']:"");?></div>
       <div class="col-md-2" style="text-align: center;"><?php echo (isset($row['StateDate']))?$row['StateDate']:"";?></div>
@@ -78,7 +78,8 @@
       
       <div class="col-md-1" style="text-align: center;"><a href="?id=<?php echo $row['Detail_Id'];?>" title="Accept"><i class="fa fa-check " aria-hidden="true"></i></a>&nbsp;&nbsp;<a href="?msg=<?php echo $row['Detail_Id'];?>" title="Denied"><i class="fa fa-times" style="color: #202a29;" aria-hidden="true"></i></a></div>
     </div><hr style="margin-bottom: 0px;margin-top: 0px;border-top: 1px solid #eee;">
-      <?php }?>    
+      <?php }?>  
+     
 </div>
 
 <div class="validation-form" style="margin-bottom: 0px;margin-top: 10px;">

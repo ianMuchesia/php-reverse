@@ -6,13 +6,13 @@
 	$db=$dbs->connection();
   $name="";
   $id="";
-	//$sql = mysqli_query($db,"select * from state  ORDER BY Name");
+	//$sql = mysqli_query($db,"select * from counties  ORDER BY Name");
 	$countryn = mysqli_query($db,"select * from country  ORDER BY Name");
 
   if(isset($_GET['stateedit']))
   {
     $stateid = $_GET['stateedit'];
-    $edit = mysqli_query($db,"select * from state where StateId='$stateid'");
+    $edit = mysqli_query($db,"select * from counties where StateId='$stateid'");
     $row = mysqli_fetch_assoc($edit);
 
     $name=$row['Name'];
@@ -24,18 +24,18 @@
   {
     $SearchStateName = $_GET['searcstate'];
     $RecordeLimit = 5;
-    $searchState = mysqli_query($db,"select count(StateId) as total from state where Name like '%".$SearchStateName."%'");
+    $searchState = mysqli_query($db,"select count(StateId) as total from counties where Name like '%".$SearchStateName."%'");
     $SName = mysqli_fetch_array($searchState);
     $number_of_row =ceil($SName['total']/5); 
 
     if(isset($_GET['bn']) && intval($_GET['bn']) <= $number_of_row && intval($_GET['bn'] !=0))
     {
       $Skip = (intval($_GET["bn"]) * $RecordeLimit) - $RecordeLimit;
-      $sql = mysqli_query($db,"select * from state where Name like '%".$SearchStateName."%' LIMIT $Skip,$RecordeLimit ");
+      $sql = mysqli_query($db,"select * from counties where Name like '%".$SearchStateName."%' LIMIT $Skip,$RecordeLimit ");
     }
     else
     {
-      $sql = mysqli_query($db,"select * from state where Name like '%".$SearchStateName."%' LIMIT $RecordeLimit ");  
+      $sql = mysqli_query($db,"select * from counties where Name like '%".$SearchStateName."%' LIMIT $RecordeLimit ");  
     }
 
     for($i=0;$i<$number_of_row;$i++)
@@ -43,11 +43,11 @@
       $d = $i+1;
       if(isset($_GET["searcstate"]))
       {
-        $page .= "<a href='state.php?searcstate=$SearchStateName&bn=$d'>$d</a>&nbsp &nbsp &nbsp";
+        $page .= "<a href='county.php?searcstate=$SearchStateName&bn=$d'>$d</a>&nbsp &nbsp &nbsp";
       }
       else
       {
-        $page .= "<a href='state.php?bn=$d'>$d</a>&nbsp &nbsp &nbsp";
+        $page .= "<a href='county.php?bn=$d'>$d</a>&nbsp &nbsp &nbsp";
       }                     
     } 
   }
@@ -71,7 +71,7 @@
     for($i=0;$i<$number_of_row;$i++)
     {
         $d = $i+1;
-        $page .= "<a href='state.php?bn=$d'>$d</a>&nbsp &nbsp &nbsp";
+        $page .= "<a href='county.php?bn=$d'>$d</a>&nbsp &nbsp &nbsp";
     }
   }
 ?>

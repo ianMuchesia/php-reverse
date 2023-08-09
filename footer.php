@@ -45,7 +45,7 @@
 												<li><a href="inquiry.php">Inquiry</a></li> -->
 											</ul>
 										</li>
-										<li><a href="leaverequest.php"><i class="fa fa-pagelines"></i><span>Filled reports</span></a>
+										<li><a href="reports.php"><i class="fa fa-pagelines"></i><span>Filed reports</span></a>
 										  
 										</li>
 
@@ -69,7 +69,7 @@
 												<li><a href="area.php">Area</a></li>
 												<li><a href="county.php">County</a></li>
 												<li><a href="country.php">Country</a></li>
-												<li><a href="position.php">Ownership</a></li>
+												<!-- <li><a href="position.php">Ownership</a></li> -->
 											</ul>
 										</li>
 										

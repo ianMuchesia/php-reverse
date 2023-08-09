@@ -6,7 +6,7 @@
 	$db=$dbs->connection();
   $name=""; 
   $id="";
-	//$sql = mysqli_query($db,"select * from city  ORDER BY Name");
+	//$sql = mysqli_query($db,"select * from areas  ORDER BY Name");
 	$staten = mysqli_query($db,"select * from counties  ORDER BY Name");
   if(isset($_GET['cityedit']))
   {
@@ -22,18 +22,18 @@
   {
     $SearchCityName = $_GET['searccity'];
     $RecordeLimit = 5;
-    $searchcity = mysqli_query($db,"select count(CityId) as total from city where Name like '%".$SearchCityName."%'");
+    $searchcity = mysqli_query($db,"select count(CityId) as total from areas where Name like '%".$SearchCityName."%'");
     $CName = mysqli_fetch_array($searchcity);
     
     $number_of_row =ceil($CName['total']/5); 
     if(isset($_GET['bn']) &&intval($_GET['bn']) <= $number_of_row && intval($_GET['bn'] !=0))
     {
       $Skip = (intval($_GET["bn"]) * $RecordeLimit) - $RecordeLimit;
-      $sql = mysqli_query($db,"select * from city where Name like '%".$SearchCityName."%' LIMIT $Skip,$RecordeLimit ");
+      $sql = mysqli_query($db,"select * from areas where Name like '%".$SearchCityName."%' LIMIT $Skip,$RecordeLimit ");
     }
     else
     {
-      $sql = mysqli_query($db,"select * from city where Name like '%".$SearchCityName."%' LIMIT $RecordeLimit ");
+      $sql = mysqli_query($db,"select * from areas where Name like '%".$SearchCityName."%' LIMIT $RecordeLimit ");
     }
 
     for($i=0;$i<$number_of_row;$i++)
@@ -41,11 +41,11 @@
       $d = $i+1;
       if(isset($_GET["searccity"]))
       {
-        $page .= "<a href='city.php?searccity=$SearchCityName&bn=$d'>$d</a>&nbsp &nbsp &nbsp";
+        $page .= "<a href='area.php?searccity=$SearchCityName&bn=$d'>$d</a>&nbsp &nbsp &nbsp";
       }
       else
       {
-        $page .= "<a href='city.php?bn=$d'>$d</a>&nbsp &nbsp &nbsp";
+        $page .= "<a href='area.php?bn=$d'>$d</a>&nbsp &nbsp &nbsp";
       }                     
     } 
   }
@@ -69,7 +69,7 @@
     for($i=0;$i<$number_of_row;$i++)
     {
         $d = $i+1;
-        $page .= "<a href='city.php?bn=$d'>$d</a>&nbsp &nbsp &nbsp";
+        $page .= "<a href='area.php?bn=$d'>$d</a>&nbsp &nbsp &nbsp";
     }
   }
 ?>
@@ -111,7 +111,7 @@
  		
  		<div class="validation-form" style="overflow: auto; margin-right:20px; height: 450px; width: 49%; float: left;">
  	<!---->
-        <form method="POST" action="controller/ccity.php?cityedit=<?php echo isset($row['CityId']) ? $row['CityId'] : ""; ?>">
+        <form method="POST" action="controller/carea.php?cityedit=<?php echo isset($row['CityId']) ? $row['CityId'] : ""; ?>">
         <div class="vali-form-group" >
         <h2>Add Area</h2>
         	<div class="col-md-3 control-label">
@@ -174,7 +174,7 @@
 						<tr>
 							<td><?php if(isset($_GET['bn'])==0){ echo $i; } else{ echo ($_GET['bn']-1)*5+$i; } $i++;?></td>
 							<td><?php echo ucfirst($row['Name']); ?></td>
-							<td><a href="?cityedit=<?php echo $row['CityId']; ?>"><i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="controller/ccity.php?citydelete=<?php echo $row['CityId']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+							<td><a href="?cityedit=<?php echo $row['CityId']; ?>"><i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="controller/carea.php?citydelete=<?php echo $row['CityId']; ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
 						 </tr>	
               <?php } ?>
 						</tbody>
