@@ -13,7 +13,7 @@ $gendern = mysqli_query($db, "select * from gender  ORDER BY Name");
 $rolen = mysqli_query($db, "select * from role  ORDER BY Name");
 $statusn = mysqli_query($db, "select * from status  ORDER BY Name");
 $maritaln = mysqli_query($db, "select * from maritalstatus  ORDER BY Name");
-$owners = mysqli_query($db, "select * from owners  ORDER BY Name");
+$owners = mysqli_query($db, "select * from ownerType  ORDER BY Name");
 $vehicle = mysqli_query($db, "select * from vehicletype  ORDER BY vehicletype_name");
 $county = mysqli_query($db, "select * from counties  ORDER BY Name");
 $area = mysqli_query($db, "select * from areas  ORDER BY Name");
@@ -29,16 +29,19 @@ if (isset($_GET['msg'])) {
   $editempid = mysqli_query($db, "SELECT e.*,ss.StateId,cc.CountryId FROM employee e join areas c on e.CityId=c.CityId join counties ss on c.StateId=ss.StateId join country cc on cc.CountryId=ss.CountryId where EmpId='$empid'");
 
   $editemp = mysqli_fetch_assoc($editempid);
- 
+
   // $editVehicleid = mysqli_query($db,"SELECT * FROM vehicle WHERE owner = '' ")
 
   $CountryId = $editemp["CountryId"];
   $StateId = $editemp['StateId'];
   $CityId = $editemp['CityId'];
-  $ownerId = $editemp['ownerId'];
- $editVehicleid = mysqli_query($db,"SELECT * FROM vehicle WHERE owner = '$ownerId' ");
- $editVehicle=mysqli_fetch_assoc($editVehicleid);
+  $ownerId = $editemp['owner_id'];
+  $editVehicleid = mysqli_query($db, "SELECT * FROM vehicle WHERE owner = '$ownerId' ");
+  $editVehicle = mysqli_fetch_assoc($editVehicleid);
 
+  $editOwnerId = mysqli_query($db ,"SELECT * FROM owners WHERE id_number = '$ownerId' ");
+  $editOwner = mysqli_fetch_assoc($editOwnerId);
+  
 }
 ?>
 <ol class="breadcrumb" style="margin: 10px 0px ! important;">
@@ -142,14 +145,14 @@ if (isset($_GET['msg'])) {
           </div>
         </div> -->
         <div class="col-md-4 control-label">
-            <label class="control-label">Driver Email*</label>
-            <div class="input-group">
-              <span class="input-group-addon">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-              </span>
-              <input type="driver_email" name="driver_email" title="Driver Email" value="<?php echo (isset($editemp["email"])) ? $editemp["email"] : ""; ?>" class="form-control" placeholder="Email" required="">
-            </div>
+          <label class="control-label">Driver Email*</label>
+          <div class="input-group">
+            <span class="input-group-addon">
+              <i class="fa fa-envelope" aria-hidden="true"></i>
+            </span>
+            <input type="driver_email" name="driver_email" title="Driver Email" value="<?php echo (isset($editemp["Email"])) ? $editemp["Email"] : ""; ?>" class="form-control" placeholder="Email" required="">
           </div>
+        </div>
 
         <div class="col-md-4 control-label">
           <label class="control-label">Marital*</label>
@@ -234,10 +237,11 @@ if (isset($_GET['msg'])) {
             <span class="input-group-addon">
               <i class="fa fa-user" aria-hidden="true"></i>
             </span>
-            <input type="text" name="vehreg" title="Registration No" value="<?php echo (isset($editemp["regno"])) ? $editemp["regno"] : ""; ?>" class="form-control" placeholder="Registration No" required="">
+
+            <input type="text" name="vehreg" title="Registration No" value="<?php echo (isset($editVehicle["Reg_No"])) ? $editVehicle["Reg_No"] : ""; ?>" class="form-control" placeholder="Registration No" required="">
           </div>
         </div>
-
+        
         <div class="col-md-4">
           <label class="control-label">Vehicle owner*</label>
           <div class="input-group">
@@ -247,15 +251,15 @@ if (isset($_GET['msg'])) {
             <select name="owner" title="Owner" class="form-control" style="text-transform: capitalize;" required="" id="owner">
               <option value="">-- Select Owner --</option>
               <?php while ($rw = mysqli_fetch_assoc($owners)) { ?>
-                <option value="<?php echo $rw["ownerId"]; ?>" <?php if (isset($editemp["ownerId"]) && $editemp["ownerId"] == $rw["ownerId"]) {
-                                                                  echo "selected";
-                                                                } ?>><?php echo $rw["Name"]; ?></option>
+                <option value="<?php echo $rw["ownerType_id"]; ?>" <?php if (isset($editemp["ownerType"]) && $editemp["ownerType"] == $rw["ownerType_id"]) {
+                                                                      echo "selected";
+                                                                    } ?>><?php echo $rw["Name"]; ?></option>
               <?php } ?>
             </select>
           </div>
         </div>
       </div>
-
+     
       <div class="vali-form-group">
         <div class="col-md-4">
           <label class="control-label">Shortcode*</label>
@@ -263,11 +267,10 @@ if (isset($_GET['msg'])) {
             <span class="input-group-addon">
               <i class="fa fa-mobile" aria-hidden="true"></i>
             </span>
-            <input type="text" name="shortcode" id="shortcode"
-            title="Shortcode" value="<?php echo (isset($editemp["shortcode"])) ? $editemp["shortcode"] : ""; ?>" class="form-control" placeholder="Shortcode" required="">
+            <input type="text" name="shortcode" id="shortcode" title="Shortcode" value="<?php echo (isset($editVehicle["shortcode"])) ? $editVehicle["shortcode"] : ""; ?>" class="form-control" placeholder="Shortcode" required="">
           </div>
         </div>
-
+      
         <div class="col-md-3 control-label">
           <label class="control-label">Country*</label>
           <div class="input-group">
@@ -294,7 +297,7 @@ if (isset($_GET['msg'])) {
             <select name="state" id="stateid" title="State" required="" style="text-transform: capitalize;">
               <option value="">-- Select County --</option>
               <?php while ($rw = mysqli_fetch_assoc($county)) { ?>
-                <option value="<?php echo $rw["StateId"]; ?>" <?php if (isset($editemp["State"]) && $editemp["State"] == $rw["StateId"]) {
+                <option value="<?php echo $rw["StateId"]; ?>" <?php if (isset($editemp["StateId"]) && $editemp["StateId"] == $rw["StateId"]) {
                                                                 echo "Selected";
                                                               } ?>> <?php echo $rw["Name"]; ?> </option>
               <?php } ?>
@@ -310,7 +313,7 @@ if (isset($_GET['msg'])) {
               <select name="area" id="cityid" title="City" style="text-transform: capitalize;">
                 <option value="">-- Select Area --</option>
                 <?php while ($rw = mysqli_fetch_assoc($area)) { ?>
-                  <option value="<?php echo $rw["CityId"]; ?>" <?php if (isset($editemp["city"]) && $editemp["city"] == $rw["CityId"]) {
+                  <option value="<?php echo $rw["CityId"]; ?>" <?php if (isset($editemp["CityId"]) && $editemp["CityId"] == $rw["CityId"]) {
                                                                   echo "Selected";
                                                                 } ?>> <?php echo $rw["Name"]; ?> </option>
                 <?php } ?>
@@ -332,7 +335,7 @@ if (isset($_GET['msg'])) {
               <span class="input-group-addon">
                 <i class="fa fa-user" aria-hidden="true"></i>
               </span>
-              <input type="text" name="owner_name" title="Owner Name" value="<?php echo (isset($editemp["owner_name"])) ? $editemp["owner_name"] : ""; ?>" class="form-control" placeholder="Owner Name" required="">
+              <input type="text" name="owner_name" title="Owner Name" value="<?php echo (isset($editOwner["Name"])) ? $editOwner["Name"] : ""; ?>" class="form-control" placeholder="Owner Name" required="">
             </div>
           </div>
 
@@ -342,7 +345,7 @@ if (isset($_GET['msg'])) {
               <span class="input-group-addon">
                 <i class="fa fa-id-card" aria-hidden="true"></i>
               </span>
-              <input type="text" name="id_number" title="ID Number" value="<?php echo (isset($editemp["id_number"])) ? $editemp["id_number"] : ""; ?>" class="form-control" placeholder="ID Number" required="">
+              <input type="text" name="id_number" title="ID Number" value="<?php echo (isset($editOwner["id_number"])) ? $editOwner["id_number"] : ""; ?>" class="form-control" placeholder="ID Number" required="">
             </div>
           </div>
 
@@ -352,7 +355,7 @@ if (isset($_GET['msg'])) {
               <span class="input-group-addon">
                 <i class="fa fa-phone" aria-hidden="true"></i>
               </span>
-              <input type="text" name="tele" title="Tele" value="<?php echo (isset($editemp["tele"])) ? $editemp["tele"] : ""; ?>" class="form-control" placeholder="Tele" required="">
+              <input type="text" name="tele" title="Tele" value="<?php echo (isset($editOwner["owner_tel"])) ? $editOwner["owner_tel"] : ""; ?>" class="form-control" placeholder="Tele" required="">
             </div>
           </div>
 
@@ -362,7 +365,7 @@ if (isset($_GET['msg'])) {
               <span class="input-group-addon">
                 <i class="fa fa-home" aria-hidden="true"></i>
               </span>
-              <input type="text" name="address2" title="Address 2" value="<?php echo (isset($editemp["Address2"])) ? $editemp["Address2"] : ""; ?>" class="form-control" placeholder="Address Line 2" required="">
+              <input type="text" name="address2" title="Address 2" value="<?php echo (isset($editOwner["owner_address"])) ? $editOwner["owner_address"] : ""; ?>" class="form-control" placeholder="Address Line 2" required="">
             </div>
           </div>
 
@@ -372,7 +375,7 @@ if (isset($_GET['msg'])) {
               <span class="input-group-addon">
                 <i class="fa fa-envelope" aria-hidden="true"></i>
               </span>
-              <input type="email" name="owner_email" title="Email" value="<?php echo (isset($editemp["email"])) ? $editemp["email"] : ""; ?>" class="form-control" placeholder="Email" required="">
+              <input type="email" name="owner_email" title="Email" value="<?php echo (isset($editOwner["owner_email"])) ? $editOwner["owner_email"] : ""; ?>" class="form-control" placeholder="Email" required="">
             </div>
           </div>
 
@@ -404,7 +407,7 @@ if (isset($_GET['msg'])) {
           </div>
         </div> -->
 
-    
+
 
 
         <div class="col-md-3 control-label">
@@ -413,7 +416,7 @@ if (isset($_GET['msg'])) {
             <span class="input-group-addon">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </span>
-            <input type="password" id="Psw" title="Password" value="<?php echo (isset($editemp["Password"])) ? $editemp["Password"] : ""; ?>" name="password" placeholder="Password " class="form-control" required="">
+            <input type="password" id="Psw" title="Password" value="<?php echo (isset($editOwner["password"])) ? $editOwner["password"] : ""; ?>" name="password" placeholder="Password " class="form-control" required="">
             <span class="input-group-addon">
               <a><i class='fa fa-eye' aria-hidden='false' onclick="passwordeyes()"></i></a>
             </span>
@@ -526,7 +529,6 @@ if (isset($_GET['msg'])) {
   });
 </script>
 <script>
-
   //counties based on country
   document.querySelector('#countryid').addEventListener('change', () => {
     const xhr = new XMLHttpRequest();
@@ -590,41 +592,41 @@ if (isset($_GET['msg'])) {
 
   //generate random numbers
   function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
 
-  document.querySelector("#owner").addEventListener('change', ()=>{
+  document.querySelector("#owner").addEventListener('change', () => {
 
     const xhr = new XMLHttpRequest()
     const owner = document.querySelector("#owner").value
-    if(!owner)return;
+    if (!owner) return;
 
 
     xhr.open('GET', 'controller/process.php?ownerId=' + owner, true);
     xhr.onload = function() {
       if (this.status === 200) {
 
-       
+
 
         const response = JSON.parse(this.responseText)
 
-        
-
-        document.querySelector('#shortcode').value = response.Name.slice(0,2) + getRandomNumber(0,9999);
 
 
+        document.querySelector('#shortcode').value = response.Name.slice(0, 2) + getRandomNumber(0, 9999);
 
-       
+
+
+
+      }
     }
-  }
     xhr.send()
-   
 
 
 
 
 
-  
+
+
   })
 </script>
 <?php include('footer.php'); ?>

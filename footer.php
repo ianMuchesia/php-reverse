@@ -38,7 +38,8 @@
 										<li><a href="#"><i class="fa fa-user"></i><span>client</span><span class="fa fa-angle-right" style="float: right"></span><div class="clearfix"></div></a>
 											<ul>
 												<li><a href="employeeadd.php">Add client</a></li>
-												<li><a href="employeeview.php">Client View</a></li>
+												<li><a href="employeeview.php">Driver View</a></li>
+												<li><a href="ownerview.php">Owner View</a></li>
 												<!-- <li><a href="atten.php">Attendece Details</a></li>
 												<li><a href="modifiedlogout.php">Modified Logout Time</a></li>
 												<li><a href="inquiry.php">Inquiry</a></li> -->

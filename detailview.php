@@ -12,9 +12,11 @@
 	$countryn ="";
 	$positionn = "";
 	$rolen ="";
+		
 	if(isset($_GET['employeeid']))
 	{
 		$empid = $_GET['employeeid'];
+	
 
 		$view = mysqli_query($db,"select * from employee where EmpId='$empid'");
 		$row = mysqli_fetch_assoc($view);
@@ -39,8 +41,8 @@
 		$couid = mysqli_query($db,"select * from country where CountryId='$countryid'");
 		$countryn = mysqli_fetch_assoc($couid);
 
-		$positionid = $row['ownerId'];
-		$pid = mysqli_query($db,"select * from owners where ownerId='$positionid'");
+		$positionid = $row['owner_id'];
+		$pid = mysqli_query($db,"select * from owners where id_number='$positionid'");
 		$positionn = mysqli_fetch_assoc($pid);
 
 		// $roleid = $row['RoleId'];
@@ -102,7 +104,7 @@
 			<table>
 				<tbody>
 					<tr>
-						<td rowspan="2" style="text-align: right;"><b>Photo</b>&nbsp; ::</td>
+						<td rowspan="2" style="text-align: right;"><b>Driver Photo</b>&nbsp; ::</td>
 						<td rowspan="2"><img src="image/<?php if($row) { echo $row['ImageName']; } else{ echo "Null"; }?>" style=" height: 61px; border: double;"></td>
 					</tr>
 				</tbody>
@@ -113,7 +115,7 @@
 					</tr>
 					<tr>
 					<td style="text-align: right;"><b>Owner Address</b> &nbsp;::</td>
-						<td><?php if($row) { echo $row['Address2']; } else{ echo "Null"; }?>,&nbsp;&nbsp;</td>
+						<td><?php if($positionn) { echo $positionn['owner_address']; } else{ echo "Null"; }?>,&nbsp;&nbsp;</td>
 						
 					</tr>
 					<tr>

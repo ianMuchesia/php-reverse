@@ -110,7 +110,9 @@
 				{
 					$name = $_POST["imagefilename"];
 				}
-				mysqli_query($db,"insert into employee values(null,'$empid','$fname','$mname','$lname','$gender','$address1','$city','$mnumber','$driver_email','$owner','$datetime',null,null,'$joindate',null,null,'$name', '$vehicleType', '$marital')");
+				mysqli_query($db,"INSERT INTO owners VALUES (null,'$owner_name','$owner_id','$owner_email','$address2','$password','$owner_tel')");
+
+				mysqli_query($db,"insert into employee values(null,'$empid','$fname','$mname','$lname','$gender','$address1','$city','$mnumber','$driver_email','$owner','$datetime',null,null,'$joindate',null,null,'$name', '$vehicleType', '$marital',null,null, '$owner_id')");
 
 				$autoInc_id = mysqli_insert_id($db);
 
@@ -119,16 +121,14 @@
 				
 				}
 				
-
-				mysqli_query($db,"update employee set 
-				shortcode='$shortcodeVal' where EmpId='$autoInc_id' ");
+				
 
 
 
-				mysqli_query($db ,"INSERT INTO vehicle VALUES('$vehicleType',null,'$owner','$city')");
+				mysqli_query($db ,"INSERT INTO vehicle VALUES('$vehicleType',null,'$owner_id','$city','$shortcodeVal', '$vehreg')");
 
-			mysqli_query($db,"INSERT INTO owners VALUES (null,'$owner_name',$owner_id','$owner_email','$adress2','$password','$owner_tel')");
-				header("location:../detailview.php?id=Successfull... ");exit;
+			
+				header("location:../detailview.php?id=$autoInc_id");exit;
 			}
 			else
 			{
@@ -141,7 +141,7 @@
 				{
 					$name = $_POST["imagefilename"];
 				}
-				mysqli_query($db,"update employee set EmployeeId='$empid',FirstName='$fname',MiddleName='$mname',LastName='$lname',Birthdate='$bdate',Gender='$gender',Address1='$address1',Address2='$address2',CityId='$city',Mobile='$mnumber',Email='$email',Password='$password',MaritalStatus='$marital',PositionId='$position',ModifiedDate='$datetime',JoinDate='$joindate',LeaveDate='$leavedate',StatusId='$status',ImageName='$name' where EmpId='$editid' ");
+				mysqli_query($db,"update employee set EmployeeId='$empid',FirstName='$fname',MiddleName='$mname',LastName='$lname',Gender='$gender',Address1='$address1',CityId='$city',Mobile='$mnumber',Email='$driver_email',marital_status='$marital',ModifiedDate=current_timestamp(),JoinDate='$joindate',ImageName='$name' where EmpId='$editid' ");
 
 				header("location:../detailview.php?employeeid=$editid");exit;
 			}

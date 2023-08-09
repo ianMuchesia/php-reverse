@@ -39,7 +39,7 @@ if(isset($_GET['ownerId'])){
 
     $ownerId = $_GET['ownerId'];
   
-    $query = "SELECT * FROM owners WHERE ownerId = ?";
+    $query = "SELECT * FROM ownerType WHERE ownerType_Id = ?";
     $stmt = $db->prepare($query);
     $stmt->bind_param('i', $ownerId);
     $stmt->execute();
