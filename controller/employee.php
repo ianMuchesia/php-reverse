@@ -16,16 +16,16 @@
 		$fname=$data['fname'];
 		$mname=$data['mname'];
 		$lname=$data['lname'];
-		$bdate=$data['bdate'];
+		
 		$mnumber=$data['mnumber'];
-		$email=$data['email'];
+		$driver_email=$data['driver_email'];
 		$address1=$data['address1'];
-		$address2=$data['address2'];
 		
-		$city=$data['city'];
+		
+		$city=$data['area'];
 		$joindate=$data['joindate'];
+	
 		
-		$status=$data['status'];
 	$shortcode = $data['shortcode'];
 		$password=$data['password'];
 		$marital=$data['marital'];
@@ -33,12 +33,19 @@
 		$imagefilename = $data['imagefilename'];
 		$ImageComplete=false;
 		$vehicleType = $data['vehicle'];
+		$vehreg=$data['vehreg'];
+		$owner_name=$data['owner_name'];
+		$owner_email=$data['owner_email'];
+		$owner_tel = $data['tele'];
+		$owner_id=$data['id_number'];
+		$address2=$data['address2'];
+
 
 		if($editid==0){
-			$sql = mysqli_query($db,"select * from employee where Email='$email'");
+			$sql = mysqli_query($db,"select * from employee where Email='$driver_email'");
 		}
 		else{
-			$sql = mysqli_query($db,"select * from employee where Email='$email' and empid!=$editid");
+			$sql = mysqli_query($db,"select * from employee where Email='$driver_email' and empid!=$editid");
 		}
 		
 		if(mysqli_num_rows($sql) > 0)
@@ -91,9 +98,9 @@
 			date_default_timezone_set("Asia/Kolkata");
 			$datetime = date("Y-m-d h:i:s");
 
-			print_r([$empid, $fname, $mname, $lname, $gender , $address1, $address2, $city, $mnumber, $email, $password, $owner,$vehicleType, $marital, $shortcode]);
-			if($editid==0)
-			{
+			// print_r([$empid, $fname, $mname, $lname, $gender , $address1, $address2, $city, $mnumber, $driver_email, $password, $owner,$vehicleType, $marital, $shortcode,$owner_name,$owner_email, $owner_tel, $owner_id]);
+			if($editid==0){
+			
 				if(!empty($_FILES['pfimg']['name']))
 				{
 					$name = rand(222,333333).$name;
@@ -103,7 +110,7 @@
 				{
 					$name = $_POST["imagefilename"];
 				}
-				mysqli_query($db,"insert into employee values(null,'$empid','$fname','$mname','$lname','$gender','$address1','$address2','$city','$mnumber','$email','$password','$owner','$datetime',null,null,'$joindate',null,null,'$name', '$vehicleType', '$marital',null)");
+				mysqli_query($db,"insert into employee values(null,'$empid','$fname','$mname','$lname','$gender','$address1','$city','$mnumber','$driver_email','$owner','$datetime',null,null,'$joindate',null,null,'$name', '$vehicleType', '$marital')");
 
 				$autoInc_id = mysqli_insert_id($db);
 
@@ -111,11 +118,16 @@
 					$shortcodeVal = $shortcode . $autoInc_id;
 				
 				}
-				print_r($shortcodeVal);
+				
 
 				mysqli_query($db,"update employee set 
 				shortcode='$shortcodeVal' where EmpId='$autoInc_id' ");
 
+
+
+				mysqli_query($db ,"INSERT INTO vehicle VALUES('$vehicleType',null,'$owner','$city')");
+
+			mysqli_query($db,"INSERT INTO owners VALUES (null,'$owner_name',$owner_id','$owner_email','$adress2','$password','$owner_tel')");
 				header("location:../detailview.php?id=Successfull... ");exit;
 			}
 			else

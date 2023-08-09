@@ -26,11 +26,19 @@ if (isset($_GET['msg'])) {
   $id = $_GET['id'];
 } else if (isset($_GET['empid'])) {
   $empid = $_GET['empid'];
-  $editempid = mysqli_query($db, "SELECT e.*,ss.StateId,cc.CountryId FROM employee e join city c on e.CityId=c.CityId join state ss on c.StateId=ss.StateId join country cc on cc.CountryId=ss.CountryId where EmpId='$empid'");
+  $editempid = mysqli_query($db, "SELECT e.*,ss.StateId,cc.CountryId FROM employee e join areas c on e.CityId=c.CityId join counties ss on c.StateId=ss.StateId join country cc on cc.CountryId=ss.CountryId where EmpId='$empid'");
+
   $editemp = mysqli_fetch_assoc($editempid);
+ 
+  // $editVehicleid = mysqli_query($db,"SELECT * FROM vehicle WHERE owner = '' ")
+
   $CountryId = $editemp["CountryId"];
   $StateId = $editemp['StateId'];
   $CityId = $editemp['CityId'];
+  $ownerId = $editemp['ownerId'];
+ $editVehicleid = mysqli_query($db,"SELECT * FROM vehicle WHERE owner = '$ownerId' ");
+ $editVehicle=mysqli_fetch_assoc($editVehicleid);
+
 }
 ?>
 <ol class="breadcrumb" style="margin: 10px 0px ! important;">
@@ -133,6 +141,15 @@ if (isset($_GET['msg'])) {
             <input type="text" id="Birthdate" title="Birth Date" name="bdate" placeholder="Birth Date" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" value="<?php echo (isset($editemp["Birthdate"])) ? $editemp["Birthdate"] : ""; ?>" class="form-control" required="">
           </div>
         </div> -->
+        <div class="col-md-4 control-label">
+            <label class="control-label">Driver Email*</label>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+              </span>
+              <input type="driver_email" name="driver_email" title="Driver Email" value="<?php echo (isset($editemp["email"])) ? $editemp["email"] : ""; ?>" class="form-control" placeholder="Email" required="">
+            </div>
+          </div>
 
         <div class="col-md-4 control-label">
           <label class="control-label">Marital*</label>
@@ -143,7 +160,7 @@ if (isset($_GET['msg'])) {
             <select name="marital" title="Marital" required="" style="text-transform: capitalize;">
               <option value="">-- Select Marital --</option>
               <?php while ($rw = mysqli_fetch_assoc($maritaln)) { ?>
-                <option value="<?php echo $rw["MaritalId"]; ?>" <?php if (isset($editemp["MaritalStatus"]) && $editemp["MaritalStatus"] == $rw["MaritalId"]) {
+                <option value="<?php echo $rw["MaritalId"]; ?>" <?php if (isset($editemp["marital_status"]) && $editemp["marital_status"] == $rw["MaritalId"]) {
                                                                   echo "Selected";
                                                                 } ?>> <?php echo $rw["Name"]; ?> </option>
               <?php } ?>
@@ -247,7 +264,7 @@ if (isset($_GET['msg'])) {
               <i class="fa fa-mobile" aria-hidden="true"></i>
             </span>
             <input type="text" name="shortcode" id="shortcode"
-            title="Shortcode" value="<?php echo (isset($editemp["shortcd"])) ? $editemp["shortcd"] : ""; ?>" class="form-control" placeholder="Shortcode" required="">
+            title="Shortcode" value="<?php echo (isset($editemp["shortcode"])) ? $editemp["shortcode"] : ""; ?>" class="form-control" placeholder="Shortcode" required="">
           </div>
         </div>
 
@@ -290,7 +307,7 @@ if (isset($_GET['msg'])) {
               <span class="input-group-addon">
                 <i class="fa fa-map-marker" aria-hidden="true"></i>
               </span>
-              <select name="city" id="cityid" title="City" style="text-transform: capitalize;">
+              <select name="area" id="cityid" title="City" style="text-transform: capitalize;">
                 <option value="">-- Select Area --</option>
                 <?php while ($rw = mysqli_fetch_assoc($area)) { ?>
                   <option value="<?php echo $rw["CityId"]; ?>" <?php if (isset($editemp["city"]) && $editemp["city"] == $rw["CityId"]) {
@@ -340,7 +357,7 @@ if (isset($_GET['msg'])) {
           </div>
 
           <div class="col-md-4 control-label">
-            <label class="control-label">Address*</label>
+            <label class="control-label">Owner's Address*</label>
             <div class="input-group">
               <span class="input-group-addon">
                 <i class="fa fa-home" aria-hidden="true"></i>
@@ -355,7 +372,7 @@ if (isset($_GET['msg'])) {
               <span class="input-group-addon">
                 <i class="fa fa-envelope" aria-hidden="true"></i>
               </span>
-              <input type="email" name="email" title="Email" value="<?php echo (isset($editemp["email"])) ? $editemp["email"] : ""; ?>" class="form-control" placeholder="Email" required="">
+              <input type="email" name="owner_email" title="Email" value="<?php echo (isset($editemp["email"])) ? $editemp["email"] : ""; ?>" class="form-control" placeholder="Email" required="">
             </div>
           </div>
 
