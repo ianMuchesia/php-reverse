@@ -50,18 +50,18 @@
 	else
 	{
 		$RecordeLimit = 10;
-		$search = mysqli_query($db,"select count(EmpId) as total from employee ");
+		$search = mysqli_query($db,"select count(EmpId) as total from employee where EmployeeId != 1 ");
 		$SName = mysqli_fetch_array($search);
 		
 		$number_of_row =ceil($SName['total']/10);
 		if(isset($_GET['bn']) && intval($_GET['bn']) <= $number_of_row && intval($_GET['bn'] != 0 ))
 		{
 			$Skip = (intval($_GET["bn"]) * $RecordeLimit) - $RecordeLimit;
-			$sql = mysqli_query($db,"select * from employee where RoleId !='1' LIMIT $Skip,$RecordeLimit");
+			$sql = mysqli_query($db,"select * from employee where EmployeeId != 1 LIMIT $Skip,$RecordeLimit");
 		}
 		else
 		{
-			$sql = mysqli_query($db,"select * from employee  LIMIT $RecordeLimit");
+			$sql = mysqli_query($db,"select * from employee where EmployeeId != 1 LIMIT $RecordeLimit");
 		}
 
 		for($i=0;$i<$number_of_row;$i++)

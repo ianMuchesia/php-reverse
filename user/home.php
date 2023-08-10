@@ -18,12 +18,14 @@ $dbs = new database();
 $db=$dbs->connection();
 $pending = 0;
 $accepted = 0;
-$EmpId = $_SESSION['User']['EmployeeId'];
-$pending_sql = "SELECT Detail_Id FROM `leavedetails` where EmpId= '{$EmpId}' and `LeaveStatus` = 'Pending'";
+
+$EmpId = $_SESSION['User']['id_number'];
+$pending_sql = "SELECT * FROM `reports` 
+						LEFT JOIN `vehicle` ON reports.shortcode = vehicle.shortcode where vehicle.owner= '{$EmpId}'";
 $pending_qry = mysqli_query($db, $pending_sql);
 $pending = $pending_qry->num_rows;
 
-$accepted_sql = "SELECT Detail_Id FROM `leavedetails` where EmpId= '{$EmpId}' and `LeaveStatus` = 'Accept'";
+$accepted_sql = "SELECT * FROM `vehicle` where owner= '{$EmpId}'";
 $accepted_qry = mysqli_query($db, $accepted_sql);
 $accepted = $accepted_qry->num_rows;
 
@@ -34,12 +36,12 @@ $accepted = $accepted_qry->num_rows;
                </div>
                <div class="s-12 dash-summary">
                  	<div class="dash-panel">
-						<h3>No. of Pending Applications</h3>
-						<h4 align="right"><?= number_format($pending) ?></h4>
+						<h3>No. of Vehicles</h3>
+						<h4 align="right"><?= number_format($accepted) ?></h4>
 					</div>
 					<div class="dash-panel">
-						<h3>No. of Accepted Applications</h3>
-						<h4 align="right"><?= number_format($accepted) ?></h4>
+						<h3>No. of Filed Reports</h3>
+						<h4 align="right"><?= number_format($pending) ?></h4>
 					</div>
                </div>
 <?php include('userfooter.php'); ?>

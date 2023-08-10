@@ -129,11 +129,12 @@ nav{
          <nav>
             <div class="line">
                <div class="s-12 l-5">
-                  <h3 style="color: white;">HRM</h3>
+                  <h3 style="color: white;">VigilantRides</h3>
                </div>
+              
                <div class="top-nav s-12 l-3 right">
                   <div class="employee-name" style="margin-top: 13%;">
-                     <a style="color: white;">User <font color="#808B96">:</font> <?php echo ucfirst($_SESSION['User']['FirstName'])."&nbsp;".ucfirst($_SESSION['User']['LastName']); ?></a> |
+                     <a style="color: white;">User <font color="#808B96">:</font> <?php echo ucfirst($_SESSION['User']['Name'])."&nbsp;"?></a> |
                      <a href="../controller/logout.php" style="text-align: right;"> Logout </a>
                   </div>
                                     <!-- <span class="prfil-img">
@@ -187,13 +188,13 @@ nav{
                      <ul>
                         <li><a href="home.php" title="Home">Home</a></li>
                         <li><a href="profile.php" title="Profile">Profile</a></li>
-                        <li>
+                        <!-- <li>
                            <a title="Leave">Leave</a>
                            <ul>
                               <li><a href="applyleave.php">Apply</a></li>
                               <li><a href="leavestatus.php">Applications</a></li>
                            </ul>
-                        </li>
+                        </li> -->
                         <li><a href="changepassword.php" title="Change Password">Password</a></li>
                      </ul>
                   </div>
