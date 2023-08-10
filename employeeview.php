@@ -10,7 +10,7 @@
 	{
 		$SearchName = $_GET['search'];
 		$RecordeLimit = 10;
-		$search = mysqli_query($db,"select count(EmpId) as total from employee where RoleId !='1' and (FirstName like '%".$SearchName."%' or MiddleName like '%".$SearchName."%' or LastName like '%".$SearchName."%' or EmployeeId like '%".$SearchName."%')");
+		$search = mysqli_query($db,"select count(EmpId) as total from employee  where EmployeeId != 1 and (FirstName like '%".$SearchName."%' or MiddleName like '%".$SearchName."%' or LastName like '%".$SearchName."%' or EmployeeId like '%".$SearchName."%')");
 		
 		$SName = mysqli_fetch_array($search);
 		
@@ -20,11 +20,11 @@
 
 			$Skip = (intval($_GET["bn"]) * $RecordeLimit) - $RecordeLimit;
 
-			$sql = mysqli_query($db,"select * from employee where RoleId !='1' and (FirstName like '%".$SearchName."%' or MiddleName like '%".$SearchName."%' or LastName like '%".$SearchName."%' or EmployeeId like '%".$SearchName."%') LIMIT $Skip,$RecordeLimit ");
+			$sql = mysqli_query($db,"select * from employee  where EmployeeId != 1 and (FirstName like '%".$SearchName."%' or MiddleName like '%".$SearchName."%' or LastName like '%".$SearchName."%' or EmployeeId like '%".$SearchName."%') LIMIT $Skip,$RecordeLimit ");
 		}
 		else
 		{
-			$sql = mysqli_query($db,"select * from employee where RoleId !='1' and (FirstName like '%".$SearchName."%' or MiddleName like '%".$SearchName."%' or LastName like '%".$SearchName."%' or EmployeeId like '%".$SearchName."%') LIMIT $RecordeLimit");
+			$sql = mysqli_query($db,"select * from employee  where EmployeeId != 1 and (FirstName like '%".$SearchName."%' or MiddleName like '%".$SearchName."%' or LastName like '%".$SearchName."%' or EmployeeId like '%".$SearchName."%') LIMIT $RecordeLimit");
 			
 		}
 
